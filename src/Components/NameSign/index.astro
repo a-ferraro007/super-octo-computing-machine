@@ -1,0 +1,107 @@
+<script>
+  const canvas = document.getElementById('canvas') as HTMLCanvasElement | null
+  const ctx = canvas?.getContext('2d')
+  const colors = [
+    '#535675',
+    '#33385c',
+    '#767d8d',
+    '#935d58',
+    '#1f1818',
+    '#43544a',
+    '#1a181f',
+    '#151a44'
+  ]
+  if (canvas && ctx) {
+    let cw = canvas.width
+    let ch = canvas.height
+    const cols = 60
+    const rows = 30
+    let padding = 1
+    let w = (cw - padding * cols) / cols
+    let h = (ch - padding * rows) / rows
+    ctx.globalAlpha = 0.95
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        let index = Math.floor(Math.random() * (colors.length - 0) + 0)
+        ctx.strokeStyle = '#2E2525'
+        if (
+          (y >= 2 && y <= rows - 3 && (x == 2 || x == cols - 3)) ||
+          ((y == 2 || y == rows - 3) && x >= 2 && x <= cols - 3)
+        ) {
+          ctx.fillStyle = '#bfa243'
+        } else {
+          ctx.fillStyle = colors[index]
+        }
+        ctx.strokeRect(x * (w + padding), y * (h + padding), w, h)
+        ctx.fillRect(x * (w + padding), y * (h + padding), w, h)
+      }
+    }
+    //Double Lined
+    //(y >= 1 &&
+    //    y <= rows - 2 &&
+    //    (x == 1 || x == 2 || x == cols - 3 || x == cols - 2)) ||
+    //  ((y == 1 || y == 2 || y == rows - 3 || y == rows - 2) &&
+    //    x >= 2 &&
+    //    x <= cols - 2)
+  }
+</script>
+
+<style>
+  :root {
+    --border-size: 8px;
+    --box-width: 500px;
+    --box-height: 200px;
+    --dash-size: 3em;
+    --color-one: #776f4a;
+    --color-two: #90672d;
+  }
+
+  .box,
+  .box::after {
+    height: var(--box-height);
+    width: var(--box-width);
+    border: solid;
+  }
+
+  .box {
+    border-image: repeating-linear-gradient(
+      to right,
+      var(--color-one) 0,
+      var(--color-one) calc(var(--dash-size) * 1.5),
+      var(--color-two) calc(var(--dash-size) * 1),
+      var(--color-two) calc(var(--dash-size) * 3),
+      transparent calc(var(--dash-size) * 3),
+      transparent calc(var(--dash-size) * 2)
+    );
+    border-image-slice: 16;
+    border-image-width: var(--border-size) 0;
+  }
+
+  .box::after {
+    content: '';
+    top: -1.75px;
+    right: -2px;
+
+    position: absolute;
+    border-image: repeating-linear-gradient(
+      to bottom,
+      var(--color-two) 0,
+      var(--color-two) calc(var(--dash-size) * 1.5),
+      var(--color-one) calc(var(--dash-size) * 1),
+      var(--color-one) calc(var(--dash-size) * 3),
+      transparent calc(var(--dash-size) * 3),
+      transparent calc(var(--dash-size) * 2)
+    );
+    border-image-slice: 16;
+    border-image-width: 0 var(--border-size);
+  }
+</style>
+
+<div class="relative box py-[6px] px-[5px]">
+  <canvas class="relative w-full h-full" id="canvas"></canvas>
+  <span
+    class="text-[#EEEBEB] font-cinzel stroke-black absolute top-[80px] right-[70px] font-bold z-10 text-4xl"
+  >
+    Anthony<span class="text-xs">&#9651;</span>Ferraro
+  </span>
+</div>
