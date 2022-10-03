@@ -1,23 +1,12 @@
 ---
 import NameSign from '../Components/NameSign/index.astro'
 import Platform from '../Components/Platform/index.astro'
+import DigitalScreen from '../Components/DigitalScreen/index.astro'
 ---
-
-<style>
-  .outer-border {
-    border: 8px solid black;
-    border-radius: 10px;
-  }
-
-  .inner-border {
-    border: 6px solid #282626;
-    border-radius: 1px;
-  }
-</style>
 
 <meta charset="utf-8" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<meta name="viewport" content="width=device-width" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,14 +18,10 @@ import Platform from '../Components/Platform/index.astro'
 
 <body class="bg-wall">
   <div
-    class="flex mx-32 w-full xl:max-w-[1200px] h-abovePlatform items-center justify-around"
+    class="flex flex-col h-container items-center max-w-[1200px] justify-evenly mx-auto lg:mt-14 lg:flex-row"
   >
-    <div class="max-h-[60%] flex flex-col h-full">
-      <NameSign />
-    </div>
-    <div class="h-[60%] outer-border w-[325px]">
-      <div class="h-full inner-border w-full bg-[#F1F1F1]"></div>
-    </div>
+    <NameSign />
+    <DigitalScreen />
+    <Platform />
   </div>
-  <Platform />
 </body>

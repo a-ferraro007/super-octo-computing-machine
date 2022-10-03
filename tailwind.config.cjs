@@ -13,7 +13,13 @@ module.exports = {
         green: '0 0 0 5px red'
       },
       height: {
-        abovePlatform: 'calc(100vh - 150px)'
+        container: 'calc(100vh - 150px)'
+      },
+      width: {
+        container: 'calc(100vw - 160px)'
+      },
+      screens: {
+        xs: '600px'
       }
     }
   },

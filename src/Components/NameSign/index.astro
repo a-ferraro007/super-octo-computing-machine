@@ -1,6 +1,8 @@
 <script>
   const canvas = document.getElementById('canvas') as HTMLCanvasElement | null
-  const ctx = canvas?.getContext('2d')
+  let ctx = canvas?.getContext('2d')
+  let render = true
+  const dpr = window.devicePixelRatio
   const colors = [
     '#535675',
     '#33385c',
@@ -11,11 +13,175 @@
     '#1a181f',
     '#151a44'
   ]
+
+  //Move to types file
+  interface Area {
+    col: number
+    row: number
+  }
+
+  interface FontContext {
+    font: string
+    fillStyle: string
+    fillText: string
+    x: number
+    y: number
+  }
+
   if (canvas && ctx) {
+    processWindow(ctx)
+
+    window.addEventListener('resize', (e) => {
+      let ctx = canvas.getContext('2d')
+      if (!ctx) return
+      if (window.innerWidth < 1024) {
+        processWindow(ctx)
+        render = true
+      } else if (window.innerWidth >= 1024 && render) {
+        processWindow(ctx)
+        render = false
+      }
+    })
+  }
+
+  function processWindow(ctx: CanvasRenderingContext2D) {
+    let area: Area
+    if (!canvas) return
+    canvas.width = window.innerWidth
+    //Move all the fontCTx to a constants file
+    if (window.innerWidth >= 1024) {
+      canvas.width = 600
+      canvas.height = 200
+      area = setArea(120, 50)
+      draw(canvas, ctx, area)
+      let fontCtx: FontContext = {
+        font: 'bolder 48px Cinzel',
+        fillStyle: '#EEEBEB',
+        fillText: 'Anthony Ferraro',
+        x: canvas.width / 2,
+        y: canvas.height / 2
+      }
+      let fontSubheadingCtx: FontContext = {
+        font: 'bolder 24px Cinzel',
+        fillStyle: '#EEEBEB',
+        fillText: 'Brooklyn • NY',
+        x: canvas.width / 2,
+        y: canvas.height / 1.5
+      }
+
+      setFontContext(ctx, fontCtx)
+      setFontContext(ctx, fontSubheadingCtx)
+      return
+    }
+
+    if (window.innerWidth > 768) {
+      canvas.height = 140
+      area = setArea(200, 30)
+      draw(canvas, ctx, area)
+      let fontCtx = {
+        font: 'bolder 72px Cinzel',
+        fillStyle: '#EEEBEB',
+        fillText: 'Anthony Ferraro',
+        x: canvas.width / 2, //410,
+        y: canvas.height / 2 // 265
+      }
+      let fontSubheadingCtx = {
+        font: 'bolder 40px Cinzel',
+        fillStyle: '#EEEBEB',
+        fillText: 'Brooklyn • NY',
+        x: canvas.width / 2, //410,
+        y: canvas.height / 1.5 // 265
+      }
+
+      setFontContext(ctx, fontCtx)
+      setFontContext(ctx, fontSubheadingCtx)
+    } else if (window.innerWidth > 450) {
+      canvas.height = 110
+      area = setArea(200, 30)
+      draw(canvas, ctx, area)
+      let fontCtx = {
+        font: 'bolder 56px Cinzel',
+        fillStyle: '#EEEBEB',
+        fillText: 'Anthony Ferraro',
+        x: canvas.width / 2, //130,
+        y: canvas.height / 2
+      }
+      let fontSubheadingCtx = {
+        font: 'bolder 36px Cinzel',
+        fillStyle: '#EEEBEB',
+        fillText: 'Brooklyn • NY',
+        x: canvas.width / 2, //130,
+        y: canvas.height / 1.4
+      }
+
+      setFontContext(ctx, fontCtx)
+      setFontContext(ctx, fontSubheadingCtx)
+    } else {
+      canvas.height = 110
+      area = setArea(115, 30)
+      draw(canvas, ctx, area)
+      let fontCtx = {
+        font: 'bolder 40px Cinzel',
+        fillStyle: '#EEEBEB',
+        fillText: 'Anthony Ferraro',
+        x: canvas.width / 2, //130,
+        y: canvas.height / 2
+      }
+      let fontSubheadingCtx = {
+        font: 'bolder 28px Cinzel',
+        fillStyle: '#EEEBEB',
+        fillText: 'Brooklyn • NY',
+        x: canvas.width / 2, //130,
+        y: canvas.height / 1.4
+      }
+
+      setFontContext(ctx, fontCtx)
+      setFontContext(ctx, fontSubheadingCtx)
+    }
+
+    return
+  }
+
+  function setFontContext(
+    ctx: CanvasRenderingContext2D,
+    fontCtx: FontContext
+  ): CanvasRenderingContext2D {
+    const { font, fillStyle, fillText, x, y } = fontCtx
+    ctx.font = font
+    ctx.fillStyle = fillStyle
+    ctx.textAlign = 'center'
+    ctx.fillText(fillText, x, y)
+    return ctx
+  }
+
+  function setArea(col: number, row: number): Area {
+    let area: Area = {
+      col,
+      row
+    }
+    return area
+  }
+
+  function getCanvasDimensions(
+    canvas: HTMLCanvasElement,
+    cRect: DOMRect,
+    devicePixelRatio: number
+  ): HTMLCanvasElement {
+    canvas.width =
+      Math.round(devicePixelRatio * cRect.right) - Math.round(devicePixelRatio * cRect.left)
+    canvas.height =
+      Math.round(devicePixelRatio * cRect.bottom) - Math.round(devicePixelRatio * cRect.top)
+    return canvas
+  }
+
+  function draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, area: Area) {
+    const cRect = canvas.getBoundingClientRect()
+    canvas = getCanvasDimensions(canvas, cRect, dpr)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     let cw = canvas.width
     let ch = canvas.height
-    const cols = 60
-    const rows = 30
+    const cols = area.col
+    const rows = area.row
     let padding = 1
     let w = (cw - padding * cols) / cols
     let h = (ch - padding * rows) / rows
@@ -23,85 +189,45 @@
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         let index = Math.floor(Math.random() * (colors.length - 0) + 0)
-        ctx.strokeStyle = '#2E2525'
+
         if (
-          (y >= 2 && y <= rows - 3 && (x == 2 || x == cols - 3)) ||
-          ((y == 2 || y == rows - 3) && x >= 2 && x <= cols - 3)
+          (y >= 0 && y <= rows && ((x >= 0 && x <= 1) || (x >= cols - 2 && x <= cols - 1))) ||
+          (((y >= 0 && y <= 1) || (y >= rows - 2 && y <= rows - 1)) && x >= 0 && x <= cols - 1)
         ) {
+          //if (x % 4 == 0 && y % 4 == 0) {
+          ctx.fillStyle = '#776f4a'
+          ctx.strokeStyle = '#776f4a'
+          ctx.strokeRect(x * (w + padding), y * (h + padding), w, h)
+          ctx.fillRect(x * (w + padding), y * (h + padding), w, h)
+          //} else {
+          //  ctx.fillStyle = '#90672d'
+          //  ctx.strokeStyle = '#90672d'
+          //  ctx.strokeRect(x * (w + padding), y * (h + padding), w, h)
+          //  ctx.fillRect(x * (w + padding), y * (h + padding), w, h)
+          //}
+
+          //ctx.strokeStyle = 'gray'
+          //ctx.strokeRect(x * (w + padding), y * (h + padding), w, h)
+        } else if (
+          (y >= 4 && y <= rows - 5 && (x == 4 || x == cols - 5)) ||
+          ((y == 4 || y == rows - 5) && x >= 4 && x <= cols - 5)
+        ) {
+          ctx.strokeStyle = '#2E2525'
           ctx.fillStyle = '#bfa243'
+          ctx.strokeRect(x * (w + padding), y * (h + padding), w, h)
+          ctx.fillRect(x * (w + padding), y * (h + padding), w, h)
         } else {
+          ctx.strokeStyle = '#2E2525'
           ctx.fillStyle = colors[index]
+          ctx.strokeRect(x * (w + padding), y * (h + padding), w, h)
+          ctx.fillRect(x * (w + padding), y * (h + padding), w, h)
         }
-        ctx.strokeRect(x * (w + padding), y * (h + padding), w, h)
-        ctx.fillRect(x * (w + padding), y * (h + padding), w, h)
       }
     }
-    //Double Lined
-    //(y >= 1 &&
-    //    y <= rows - 2 &&
-    //    (x == 1 || x == 2 || x == cols - 3 || x == cols - 2)) ||
-    //  ((y == 1 || y == 2 || y == rows - 3 || y == rows - 2) &&
-    //    x >= 2 &&
-    //    x <= cols - 2)
   }
 </script>
-
-<style>
-  :root {
-    --border-size: 8px;
-    --box-width: 500px;
-    --box-height: 200px;
-    --dash-size: 3em;
-    --color-one: #776f4a;
-    --color-two: #90672d;
-  }
-
-  .box,
-  .box::after {
-    height: var(--box-height);
-    width: var(--box-width);
-    border: solid;
-  }
-
-  .box {
-    border-image: repeating-linear-gradient(
-      to right,
-      var(--color-one) 0,
-      var(--color-one) calc(var(--dash-size) * 1.5),
-      var(--color-two) calc(var(--dash-size) * 1),
-      var(--color-two) calc(var(--dash-size) * 3),
-      transparent calc(var(--dash-size) * 3),
-      transparent calc(var(--dash-size) * 2)
-    );
-    border-image-slice: 16;
-    border-image-width: var(--border-size) 0;
-  }
-
-  .box::after {
-    content: '';
-    top: -1.75px;
-    right: -2px;
-
-    position: absolute;
-    border-image: repeating-linear-gradient(
-      to bottom,
-      var(--color-two) 0,
-      var(--color-two) calc(var(--dash-size) * 1.5),
-      var(--color-one) calc(var(--dash-size) * 1),
-      var(--color-one) calc(var(--dash-size) * 3),
-      transparent calc(var(--dash-size) * 3),
-      transparent calc(var(--dash-size) * 2)
-    );
-    border-image-slice: 16;
-    border-image-width: 0 var(--border-size);
-  }
-</style>
-
-<div class="relative box py-[6px] px-[5px]">
-  <canvas class="relative w-full h-full" id="canvas"></canvas>
-  <span
-    class="text-[#EEEBEB] font-cinzel stroke-black absolute top-[80px] right-[70px] font-bold z-10 text-4xl"
-  >
-    Anthony<span class="text-xs">&#9651;</span>Ferraro
-  </span>
+<div class="lg:max-h-[60%] h-full">
+  <div>
+    <canvas class="w-full lg:w-[600px]" id="canvas" width="600" height="200"></canvas>
+  </div>
 </div>
