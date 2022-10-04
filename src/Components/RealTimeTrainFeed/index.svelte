@@ -1,29 +1,41 @@
 <script>
+  import { onMount, onDestroy } from "svelte"
   let upcomingTrains
-  let combinedAndSorted = []
-  let sliceLength = 0
-  try {
+    let combinedAndSorted = []
+
+  onMount(() => {
     let conn = new WebSocket(`wss://mta.tony.place/ws?stopId=L03&subwayLine=L`)
-    conn.onmessage = function (evt) {
-      var messages = evt.data.split('\n')
-      let data = JSON.parse(messages)
-      upcomingTrains = data.parsedTrains
-      combinedAndSorted = [...upcomingTrains.northbound, ...upcomingTrains.southbound].sort(
-        (a, b) => a.train.timeInMinutes - b.train.timeInMinutes
-      )
+    console.log("e", WebSocket);
+    try {
+
+      console.log(conn);
+      conn.onmessage = function (evt) {
+        var messages = evt.data.split('\n')
+        let data = JSON.parse(messages)
+        upcomingTrains = data.parsedTrains
+        console.log(upcomingTrains);
+        combinedAndSorted = [...upcomingTrains.northbound, ...upcomingTrains.southbound].sort(
+          (a, b) => a.train.timeInMinutes - b.train.timeInMinutes
+        )
+      }
+    } catch (error) {
+      console.error(error)
     }
-  } catch (error) {
-    console.error(error)
-  }
+  })
+
+  //onDestroy(() => {
+	//	console.log(conn)
+	//	conn?.close()
+	//})
 
 </script>
 
 
 
   {#if combinedAndSorted.length > 0}
-    <ul class="overflow-scroll">
+    <ul class="overflow-scroll ">
       {#each combinedAndSorted as upcomingTrain}
-      <li class="bg-white my-2 rounded-sm">
+      <li class="bg-white first:my-0 my-2 rounded-sm">
         <div class="h-full w-full py-2">
           <div class="flex flex-row gap-3 w-full">
             <svg class="w-[26px] h-[26px] pl-1" width="100%" height="100%" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">

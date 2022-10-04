@@ -21,14 +21,14 @@ import RealTimeTrainFeed from '../RealTimeTrainFeed/index.svelte'
       <div class="bg-[#3E3E3E] px-2 pb-1">
         <span class="text-white font-bold text-xs"> Welcome to Montrose Ave</span>
       </div>
-      <section class="px-1 my-2">
+      <section class="px-1 my-3">
         <h2 class="text-black font-bold text-sm mb-1">Information</h2>
         <div class="flex flex-col bg-white px-2 py-2 rounded-sm">
           <span class="text-md font-extrabold">Software Engineer</span>
           <span class="text-sm font-semibold"> LegalZoom</span>
         </div>
       </section>
-      <section class="px-1 my-2">
+      <section class="px-1 mb-3">
         <h2 class="text-black font-bold text-sm mb-1">Where to find me</h2>
         <div class="flex gap-3 bg-white px-2 py-2 rounded-sm">
           <a href="https://github.com/a-ferraro007" target="_blank">
@@ -88,8 +88,15 @@ import RealTimeTrainFeed from '../RealTimeTrainFeed/index.svelte'
           </a>
         </div>
       </section>
-      <section class="flex flex-col h-full px-1 my-2 overflow-hidden">
-        <h2 class="text-black font-bold text-sm mb-1">Upcoming trains at Montrose Ave</h2>
+      <section class="flex flex-col h-full px-1 overflow-hidden">
+        <h2 class="text-black font-bold text-sm">Upcoming trains at Montrose Ave</h2>
+        <a
+          class="text-black font-semibold underline text-[10px] mb-[6px]"
+          href="https://github.com/a-ferraro007/improved-train"
+          target="_blank"
+        >
+          Realtime Subway Data
+        </a>
         <RealTimeTrainFeed client:load />
       </section>
     </div>
