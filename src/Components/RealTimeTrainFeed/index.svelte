@@ -1,14 +1,12 @@
 <script>
   import { onMount, onDestroy } from "svelte"
   let upcomingTrains
-    let combinedAndSorted = []
+  let combinedAndSorted = []
+  let conn
 
   onMount(() => {
-    let conn = new WebSocket(`wss://mta.tony.place/ws?stopId=L03&subwayLine=L`)
-    console.log("e", WebSocket);
+     conn = new WebSocket(`wss://mta.tony.place/ws?stopId=L03&subwayLine=L`)
     try {
-
-      console.log(conn);
       conn.onmessage = function (evt) {
         var messages = evt.data.split('\n')
         let data = JSON.parse(messages)
@@ -23,10 +21,10 @@
     }
   })
 
-  //onDestroy(() => {
-	//	console.log(conn)
-	//	conn?.close()
-	//})
+  onDestroy(() => {
+    if(!conn) return
+		conn?.close()
+	})
 
 </script>
 
