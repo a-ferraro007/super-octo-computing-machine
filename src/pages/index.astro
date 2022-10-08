@@ -15,14 +15,31 @@ import DigitalScreen from '../Components/DigitalScreen/index.astro'
   rel="stylesheet"
   rel="preload"
 />
+<script type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-02WTPMWL9F"
+></script>
+<script type="text/partytown">
+  window.dataLayer = window.dataLayer || []
+  function gtag() {
+    dataLayer.push(arguments)
+  }
+  gtag('js', new Date())
+
+  gtag('config', 'G-02WTPMWL9F')
+</script>
 <title>Anthony Ferraro</title>
 
-<body class="bg-wall">
-  <div
-    class="flex flex-col h-container items-center max-w-[1200px] justify-evenly mx-auto lg:mt-14 lg:flex-row"
-  >
-    <NameSign />
-    <DigitalScreen />
-    <Platform />
-  </div>
-</body>
+<!-- Google Tag Manager (noscript) -->
+<noscript></noscript><iframe
+  src="https://www.googletagmanager.com/ns.html?id=GTM-59WHKCS"
+  height="0"
+  width="0"
+  style="display:none;visibility:hidden"></iframe>
+
+<!-- End Google Tag Manager (noscript) -->
+<div
+  class="flex flex-col h-container items-center max-w-[1200px] justify-evenly mx-auto lg:mt-14 lg:flex-row"
+>
+  <NameSign />
+  <DigitalScreen />
+  <Platform />
+</div>
