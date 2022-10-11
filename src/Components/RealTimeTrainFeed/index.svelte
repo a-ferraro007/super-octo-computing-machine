@@ -5,13 +5,13 @@
   let conn
 
   onMount(() => {
-     conn = new WebSocket(`wss://mta.tony.place/ws?stopId=L03&subwayLine=L`)
     try {
+      conn = new WebSocket(`wss://mta.tony.place/ws?stopID=L13&subwayLine=L`)
       conn.onmessage = function (evt) {
         var messages = evt.data.split('\n')
         let data = JSON.parse(messages)
+        console.log(data);
         upcomingTrains = data.parsedTrains
-        console.log(upcomingTrains);
         combinedAndSorted = [...upcomingTrains.northbound, ...upcomingTrains.southbound].sort(
           (a, b) => a.train.timeInMinutes - b.train.timeInMinutes
         )
@@ -23,6 +23,7 @@
 
   onDestroy(() => {
     if(!conn) return
+    console.log("CLOSE: ", conn );
 		conn?.close()
 	})
 
