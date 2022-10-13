@@ -53,20 +53,22 @@
     let area: Area
     if (!canvas) return
     canvas.width = window.innerWidth
+    let fontCtx: FontContext
+    let fontSubheadingCtx: FontContext
     //Move all the fontCTx to a constants file
     if (window.innerWidth >= 1024) {
       canvas.width = 600
       canvas.height = 200
       area = setArea(120, 50)
       draw(canvas, ctx, area)
-      let fontCtx: FontContext = {
+      fontCtx = {
         font: `bolder ${48 * dpr}px Cinzel`,
         fillStyle: '#EEEBEB',
         fillText: 'Anthony Ferraro',
         x: canvas.width / 2,
         y: canvas.height / 2
       }
-      let fontSubheadingCtx: FontContext = {
+      fontSubheadingCtx = {
         font: `bolder ${24 * dpr}px Cinzel`,
         fillStyle: '#EEEBEB',
         fillText: 'Brooklyn • NY',
@@ -76,74 +78,64 @@
 
       setFontContext(ctx, fontCtx)
       setFontContext(ctx, fontSubheadingCtx)
-      return
-    }
-
-    if (window.innerWidth > 768) {
+    } else if (window.innerWidth > 768) {
+      console.log('HJERE')
       canvas.height = 140
       area = setArea(200, 30)
       draw(canvas, ctx, area)
-      let fontCtx = {
+      fontCtx = {
         font: `bolder ${36 * dpr}px Cinzel`,
         fillStyle: '#EEEBEB',
         fillText: 'Anthony Ferraro',
         x: canvas.width / 2, //410,
         y: canvas.height / 2 // 265
       }
-      let fontSubheadingCtx = {
-        font: `bolder ${20 * dpr}pxCinzel`,
+      fontSubheadingCtx = {
+        font: `bolder ${20 * dpr}px Cinzel`,
         fillStyle: '#EEEBEB',
         fillText: 'Brooklyn • NY',
         x: canvas.width / 2, //410,
-        y: canvas.height / 1.5 // 265
+        y: canvas.height / 1.4 // 265
       }
-
-      setFontContext(ctx, fontCtx)
-      setFontContext(ctx, fontSubheadingCtx)
     } else if (window.innerWidth > 450) {
       canvas.height = 110
       area = setArea(200, 30)
       draw(canvas, ctx, area)
-      let fontCtx = {
+      fontCtx = {
         font: `bolder ${28 * dpr}px Cinzel`,
         fillStyle: '#EEEBEB',
         fillText: 'Anthony Ferraro',
         x: canvas.width / 2, //130,
         y: canvas.height / 2
       }
-      let fontSubheadingCtx = {
+      fontSubheadingCtx = {
         font: `bolder ${18 * dpr}px Cinzel`,
         fillStyle: '#EEEBEB',
         fillText: 'Brooklyn • NY',
         x: canvas.width / 2, //130,
         y: canvas.height / 1.4
       }
-
-      setFontContext(ctx, fontCtx)
-      setFontContext(ctx, fontSubheadingCtx)
     } else {
       canvas.height = 110
       area = setArea(115, 30)
       draw(canvas, ctx, area)
-      let fontCtx = {
+      fontCtx = {
         font: `bolder ${20 * dpr}px Cinzel`,
         fillStyle: '#EEEBEB',
         fillText: 'Anthony Ferraro',
         x: canvas.width / 2, //130,
         y: canvas.height / 2
       }
-      let fontSubheadingCtx = {
+      fontSubheadingCtx = {
         font: `bolder ${14 * dpr}px Cinzel`,
         fillStyle: '#EEEBEB',
         fillText: 'Brooklyn • NY',
         x: canvas.width / 2, //130,
         y: canvas.height / 1.4
       }
-
-      setFontContext(ctx, fontCtx)
-      setFontContext(ctx, fontSubheadingCtx)
     }
-
+    setFontContext(ctx, fontCtx)
+    setFontContext(ctx, fontSubheadingCtx)
     return
   }
 
