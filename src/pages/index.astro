@@ -4,6 +4,12 @@ import Platform from '../Components/Platform/index.astro'
 import DigitalScreen from '../Components/DigitalScreen/index.astro'
 ---
 
+<style>
+  .container {
+    height: calc(100vh - 150px);
+  }
+</style>
+
 <meta charset="utf-8" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -38,7 +44,7 @@ import DigitalScreen from '../Components/DigitalScreen/index.astro'
 
   <!-- End Google Tag Manager (noscript) -->
   <div
-    class="flex flex-col h-container items-center max-w-[1200px] justify-evenly mx-auto lg:mt-14 lg:flex-row"
+    class="flex flex-col container items-center max-w-[1200px] justify-evenly mx-auto lg:mt-14 lg:flex-row"
   >
     <NameSign />
     <DigitalScreen />
