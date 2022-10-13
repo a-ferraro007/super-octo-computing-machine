@@ -6,7 +6,8 @@ import DigitalScreen from '../Components/DigitalScreen/index.astro'
 
 <style>
   .container {
-    height: calc(100vh - 150px);
+    height: calc(100vh - 150px); /*Fallback for dvh in unsupported browsers */
+    height: calc(100dvh - 150px);
   }
 </style>
 
@@ -44,7 +45,7 @@ import DigitalScreen from '../Components/DigitalScreen/index.astro'
 
   <!-- End Google Tag Manager (noscript) -->
   <div
-    class="flex flex-col container items-center max-w-[1200px] justify-evenly mx-auto lg:mt-14 lg:flex-row"
+    class="flex flex-col container items-center max-w-[1200px] lg:justify-evenly mx-auto lg:mt-14 lg:flex-row"
   >
     <NameSign />
     <DigitalScreen />
