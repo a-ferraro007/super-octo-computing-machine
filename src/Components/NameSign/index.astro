@@ -29,7 +29,12 @@
   }
 
   if (canvas && ctx) {
-    processWindow(ctx)
+    window.addEventListener('load', () => {
+      console.log('load', ctx)
+      if (ctx) {
+        processWindow(ctx)
+      }
+    })
 
     window.addEventListener('resize', (e) => {
       let ctx = canvas.getContext('2d')
